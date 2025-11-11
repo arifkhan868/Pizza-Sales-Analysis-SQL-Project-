@@ -79,3 +79,19 @@ GROUP BY pt.name
 ORDER BY total_revenue DESC
 LIMIT 3;
 ```
+---
+##  Revenue Over Time
+
+```
+SELECT order_month,
+       total_revenue,
+       SUM(total_revenue) OVER (ORDER BY order_month) AS cumulative_revenue
+FROM (
+    SELECT DATE_TRUNC('month', date) AS order_month,
+           SUM(p.price * od.quantity) AS total_revenue
+    FROM pizza.order_details od
+    JOIN pizza.orders o ON od.order_id = o.order_id
+    JOIN pizza.pizzas p ON p.pizza_id = od.pizza_id
+    GROUP BY 1
+) AS ct;
+```
