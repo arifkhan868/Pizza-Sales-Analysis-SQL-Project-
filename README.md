@@ -95,3 +95,34 @@ FROM (
     GROUP BY 1
 ) AS ct;
 ```
+---
+## Top 3 Pizzas per Category
+```
+WITH pizza_category AS (
+    SELECT pt.category,
+           pt.name,
+           SUM(p.price * od.quantity) AS total_revenue
+    FROM pizza.order_details od
+    JOIN pizza.pizzas p ON od.pizza_id = p.pizza_id
+    JOIN pizza.pizza_types pt ON pt.pizza_type_id = p.pizza_type_id
+    GROUP BY pt.category, pt.name
+)
+SELECT *
+FROM (
+    SELECT category,
+           name,
+           total_revenue,
+           DENSE_RANK() OVER (PARTITION BY category ORDER BY total_revenue DESC) AS ranking
+    FROM pizza_category
+) AS ct
+WHERE ranking <= 3;
+```
+---
+## Hourly Order Distribution
+```
+SELECT EXTRACT(HOUR FROM time) AS order_hour,
+       COUNT(DISTINCT order_id) AS total_orders
+FROM pizza.orders
+GROUP BY 1
+ORDER BY total_orders DESC;
+```
