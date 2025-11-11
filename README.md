@@ -61,21 +61,5 @@ FROM pizza.orders;
 -- Total quantity of pizzas sold
 SELECT SUM(quantity) AS total_quantity
 FROM pizza.order_details;
-
 ---
-## Revenue Analysis
-```
--- Total revenue from all pizzas
-SELECT SUM(p.price * od.quantity) AS total_revenue
-FROM pizza.pizzas p
-JOIN pizza.order_details od ON od.pizza_id = p.pizza_id;
 
--- Top 3 pizzas by revenue
-SELECT pt.name, SUM(p.price * od.quantity) AS total_revenue
-FROM pizza.order_details od
-JOIN pizza.pizzas p ON od.pizza_id = p.pizza_id
-JOIN pizza.pizza_types pt ON pt.pizza_type_id = p.pizza_type_id
-GROUP BY pt.name
-ORDER BY total_revenue DESC
-LIMIT 3;
-```
