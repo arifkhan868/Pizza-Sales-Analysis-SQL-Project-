@@ -126,3 +126,10 @@ FROM pizza.orders
 GROUP BY 1
 ORDER BY total_orders DESC;
 ```
+---
+## 📁 Repository Structure
+```
+SQL-Queries/      # All SQL scripts, numbered
+Dashboards/       # Power BI & Excel dashboards
+Screenshots/      # Charts and visualizations
+README.md         # Project summary and insights
